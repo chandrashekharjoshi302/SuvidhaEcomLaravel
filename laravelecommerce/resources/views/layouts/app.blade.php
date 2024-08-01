@@ -11,15 +11,13 @@
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="surfside media" />
-    <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com/">
-    <link
-      href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Allura&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/plugins/swiper.min.css" type="text/css" />
-    <link rel="stylesheet" href="assets/css/style.css" type="text/css" />
-    <link rel="stylesheet" href="assets/css/custom.css" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('assets/css/plugins/swiper.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
       integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw=="
       crossorigin="anonymous" referrerpolicy="no-referrer">
@@ -311,10 +309,10 @@
                 <a href="{{route('home.index')}}" class="navigation__link">Home</a>
               </li>
               <li class="navigation__item">
-                <a href="shop.html" class="navigation__link">Shop</a>
+                <a href="{{route('shop.index')}}" class="navigation__link">Shop</a>
               </li>
               <li class="navigation__item">
-                <a href="cart.html" class="navigation__link">Cart</a>
+                <a href="{{route('cart.index')}}" class="navigation__link">Cart</a>
               </li>
               <li class="navigation__item">
                 <a href="about.html" class="navigation__link">About</a>
@@ -400,10 +398,10 @@
                 <a href="{{route('home.index')}}" class="navigation__link">Home</a>
               </li>
               <li class="navigation__item">
-                <a href="shop.html" class="navigation__link">Shop</a>
+                <a href="{{route('shop.index')}}" class="navigation__link">Shop</a>
               </li>
               <li class="navigation__item">
-                <a href="cart.html" class="navigation__link">Cart</a>
+                <a href="{{route('cart.index')}}" class="navigation__link">Cart</a>
               </li>
               <li class="navigation__item">
                 <a href="about.html" class="navigation__link">About</a>
@@ -489,19 +487,23 @@
   </div>
 @endif
   
-            <a href="wishlist.html" class="header-tools__item">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <use href="#icon_heart" />
+<a class="header-tools__item header-tools__wishlist" href="{{route('wishlist.index')}}">
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <use href="#icon_heart" />
+  </svg>
+  @if(Cart::instance("wishlist")->content()->count()>0)
+  <span class="cart-amount d-block position-absolute js-cart-items-count">{{Cart::instance("wishlist")->content()->count()}}</span>
+  @endif
+  </a>
+            <a href="{{route('cart.index')}}" class="header-tools__item header-tools__cart">
+              <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <use href="#icon_cart" />
               </svg>
-            </a>
-  
-            <a href="cart.html" class="header-tools__item header-tools__cart">
-              <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <use href="#icon_cart" />
-              </svg>
-              <span class="cart-amount d-block position-absolute js-cart-items-count">3</span>
-            </a>
+              
+              @if(Cart::instance("cart")->content()->count()>0) 
+                  <span class="cart-amount d-block position-absolute js-cart-items-count">{{Cart::instance("cart")->content()->count()}}</span>
+              @endif
+          </a>
           </div>
         </div>
       </div>
@@ -641,7 +643,7 @@
         </div>
   
         <div class="col-4">
-          <a href="index.html" class="footer-mobile__link d-flex flex-column align-items-center">
+          <a href="{{route('shop.index')}}" class="footer-mobile__link d-flex flex-column align-items-center">
             <svg class="d-block" width="18" height="18" viewBox="0 0 18 18" fill="none"
               xmlns="http://www.w3.org/2000/svg">
               <use href="#icon_hanger" />
@@ -668,12 +670,13 @@
     <div id="scrollTop" class="visually-hidden end-0"></div>
     <div class="page-overlay"></div>
   
-    <script src="assets/js/plugins/jquery.min.js"></script>
-    <script src="assets/js/plugins/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/plugins/bootstrap-slider.min.js"></script>
-    <script src="assets/js/plugins/swiper.min.js"></script>
-    <script src="assets/js/plugins/countdown.js"></script>
-    <script src="assets/js/theme.js"></script>
+    <script src="{{ asset('assets/js/plugins/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/bootstrap-slider.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/swiper.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/countdown.js') }}"></script>
+    <script src="{{ asset('assets/js/theme.js') }}"></script>
+    
     @stack('scripts')
   </body>
 </html>
